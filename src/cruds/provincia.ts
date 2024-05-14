@@ -20,6 +20,7 @@ export const getProvincia = async (
   const provincia = await db.query.provincia.findFirst({
     where: (provincia, { eq }) => eq(provincia.id, id),
   });
+  console.log(provincia);
   return provincia;
 };
 

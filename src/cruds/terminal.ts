@@ -12,17 +12,24 @@ type Terminal = {
   provincia_id: number;
 };
 
-export const getTerminales = async (db: DBDriver): Promise<Terminal[]> => {
-  const terminales = await db.query.terminal.findMany();
+export const getTerminales = async (
+  db: DBDriver,
+  provincia_id: number
+): Promise<Terminal[]> => {
+  const terminales = await db.query.terminal.findMany({
+    where: (terminal, { eq }) => eq(terminal.provincia_id, provincia_id),
+  });
   return terminales;
 };
 
 export const getTerminal = async (
   db: DBDriver,
-  id: number
+  id: number,
+  provincia_id: number
 ): Promise<Terminal | undefined> => {
   const terminal = await db.query.terminal.findFirst({
-    where: (terminal, { eq }) => eq(terminal.id, id),
+    where: (terminal, { and, eq }) =>
+      and(eq(terminal.id, id), eq(terminal.provincia_id, provincia_id)),
   });
   return terminal;
 };

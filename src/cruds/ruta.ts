@@ -11,17 +11,34 @@ type Ruta = {
   provincia_id: number;
 };
 
-export const getRutas = async (db: DBDriver): Promise<Ruta[]> => {
-  const rutas = await db.query.ruta.findMany();
+export const getRutas = async (
+  db: DBDriver,
+  terminal_id: number,
+  provincia_id: number
+): Promise<Ruta[]> => {
+  const rutas = await db.query.ruta.findMany({
+    where: (ruta, { and, eq }) =>
+      and(
+        eq(ruta.terminal_id, terminal_id),
+        eq(ruta.provincia_id, provincia_id)
+      ),
+  });
   return rutas;
 };
 
 export const getRuta = async (
   db: DBDriver,
-  id: number
+  id: number,
+  terminal_id: number,
+  provincia_id: number
 ): Promise<Ruta | undefined> => {
   const ruta = await db.query.ruta.findFirst({
-    where: (ruta, { eq }) => eq(ruta.id, id),
+    where: (ruta, { and, eq }) =>
+      and(
+        eq(ruta.id, id),
+        eq(ruta.terminal_id, terminal_id),
+        eq(ruta.provincia_id, provincia_id)
+      ),
   });
   return ruta;
 };
