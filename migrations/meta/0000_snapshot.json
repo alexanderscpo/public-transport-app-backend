@@ -1,0 +1,355 @@
+{
+  "version": "6",
+  "dialect": "sqlite",
+  "id": "d1d3bf9e-0ecb-4685-b68c-b9a3492ef253",
+  "prevId": "00000000-0000-0000-0000-000000000000",
+  "tables": {
+    "parada": {
+      "name": "parada",
+      "columns": {
+        "id": {
+          "name": "id",
+          "type": "text(10)",
+          "primaryKey": true,
+          "notNull": true,
+          "autoincrement": false
+        },
+        "nombre": {
+          "name": "nombre",
+          "type": "text(50)",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false
+        },
+        "direccion": {
+          "name": "direccion",
+          "type": "text(100)",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false
+        },
+        "x": {
+          "name": "x",
+          "type": "real",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false
+        },
+        "y": {
+          "name": "y",
+          "type": "real",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false
+        },
+        "provincia_id": {
+          "name": "provincia_id",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false
+        }
+      },
+      "indexes": {},
+      "foreignKeys": {
+        "parada_provincia_id_provincia_id_fk": {
+          "name": "parada_provincia_id_provincia_id_fk",
+          "tableFrom": "parada",
+          "tableTo": "provincia",
+          "columnsFrom": [
+            "provincia_id"
+          ],
+          "columnsTo": [
+            "id"
+          ],
+          "onDelete": "no action",
+          "onUpdate": "no action"
+        }
+      },
+      "compositePrimaryKeys": {},
+      "uniqueConstraints": {}
+    },
+    "provincia": {
+      "name": "provincia",
+      "columns": {
+        "id": {
+          "name": "id",
+          "type": "integer",
+          "primaryKey": true,
+          "notNull": true,
+          "autoincrement": false
+        },
+        "nombre": {
+          "name": "nombre",
+          "type": "text(50)",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false
+        },
+        "abreviatura": {
+          "name": "abreviatura",
+          "type": "text(5)",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false
+        }
+      },
+      "indexes": {
+        "provincia_abreviatura_unique": {
+          "name": "provincia_abreviatura_unique",
+          "columns": [
+            "abreviatura"
+          ],
+          "isUnique": true
+        }
+      },
+      "foreignKeys": {},
+      "compositePrimaryKeys": {},
+      "uniqueConstraints": {}
+    },
+    "ruta": {
+      "name": "ruta",
+      "columns": {
+        "id": {
+          "name": "id",
+          "type": "integer",
+          "primaryKey": true,
+          "notNull": true,
+          "autoincrement": false
+        },
+        "nombre": {
+          "name": "nombre",
+          "type": "text(10)",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false
+        },
+        "origen": {
+          "name": "origen",
+          "type": "text(40)",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false
+        },
+        "destino": {
+          "name": "destino",
+          "type": "text(40)",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false
+        },
+        "terminal_id": {
+          "name": "terminal_id",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false
+        },
+        "provincia_id": {
+          "name": "provincia_id",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false
+        }
+      },
+      "indexes": {},
+      "foreignKeys": {
+        "ruta_terminal_id_terminal_id_fk": {
+          "name": "ruta_terminal_id_terminal_id_fk",
+          "tableFrom": "ruta",
+          "tableTo": "terminal",
+          "columnsFrom": [
+            "terminal_id"
+          ],
+          "columnsTo": [
+            "id"
+          ],
+          "onDelete": "no action",
+          "onUpdate": "no action"
+        },
+        "ruta_provincia_id_provincia_id_fk": {
+          "name": "ruta_provincia_id_provincia_id_fk",
+          "tableFrom": "ruta",
+          "tableTo": "provincia",
+          "columnsFrom": [
+            "provincia_id"
+          ],
+          "columnsTo": [
+            "id"
+          ],
+          "onDelete": "no action",
+          "onUpdate": "no action"
+        }
+      },
+      "compositePrimaryKeys": {},
+      "uniqueConstraints": {}
+    },
+    "rutas_to_paradas": {
+      "name": "rutas_to_paradas",
+      "columns": {
+        "id": {
+          "name": "id",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false
+        },
+        "ruta_id": {
+          "name": "ruta_id",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false
+        },
+        "parada_id": {
+          "name": "parada_id",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false
+        },
+        "orden": {
+          "name": "orden",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false
+        },
+        "regreso": {
+          "name": "regreso",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false
+        }
+      },
+      "indexes": {},
+      "foreignKeys": {
+        "rutas_to_paradas_ruta_id_ruta_id_fk": {
+          "name": "rutas_to_paradas_ruta_id_ruta_id_fk",
+          "tableFrom": "rutas_to_paradas",
+          "tableTo": "ruta",
+          "columnsFrom": [
+            "ruta_id"
+          ],
+          "columnsTo": [
+            "id"
+          ],
+          "onDelete": "no action",
+          "onUpdate": "no action"
+        },
+        "rutas_to_paradas_parada_id_parada_id_fk": {
+          "name": "rutas_to_paradas_parada_id_parada_id_fk",
+          "tableFrom": "rutas_to_paradas",
+          "tableTo": "parada",
+          "columnsFrom": [
+            "parada_id"
+          ],
+          "columnsTo": [
+            "id"
+          ],
+          "onDelete": "no action",
+          "onUpdate": "no action"
+        }
+      },
+      "compositePrimaryKeys": {
+        "rutas_to_paradas_id_ruta_id_parada_id_pk": {
+          "columns": [
+            "id",
+            "parada_id",
+            "ruta_id"
+          ],
+          "name": "rutas_to_paradas_id_ruta_id_parada_id_pk"
+        }
+      },
+      "uniqueConstraints": {}
+    },
+    "terminal": {
+      "name": "terminal",
+      "columns": {
+        "id": {
+          "name": "id",
+          "type": "integer",
+          "primaryKey": true,
+          "notNull": true,
+          "autoincrement": false
+        },
+        "nombre": {
+          "name": "nombre",
+          "type": "text(50)",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false
+        },
+        "abreviatura": {
+          "name": "abreviatura",
+          "type": "text(5)",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false
+        },
+        "direccion": {
+          "name": "direccion",
+          "type": "text(100)",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false
+        },
+        "x": {
+          "name": "x",
+          "type": "real",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false
+        },
+        "y": {
+          "name": "y",
+          "type": "real",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false
+        },
+        "provincia_id": {
+          "name": "provincia_id",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false
+        }
+      },
+      "indexes": {
+        "terminal_abreviatura_unique": {
+          "name": "terminal_abreviatura_unique",
+          "columns": [
+            "abreviatura"
+          ],
+          "isUnique": true
+        }
+      },
+      "foreignKeys": {
+        "terminal_provincia_id_provincia_id_fk": {
+          "name": "terminal_provincia_id_provincia_id_fk",
+          "tableFrom": "terminal",
+          "tableTo": "provincia",
+          "columnsFrom": [
+            "provincia_id"
+          ],
+          "columnsTo": [
+            "id"
+          ],
+          "onDelete": "no action",
+          "onUpdate": "no action"
+        }
+      },
+      "compositePrimaryKeys": {},
+      "uniqueConstraints": {}
+    }
+  },
+  "enums": {},
+  "_meta": {
+    "schemas": {},
+    "tables": {},
+    "columns": {}
+  }
+}
