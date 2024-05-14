@@ -1,0 +1,17 @@
+REPLACE INTO terminal(id,nombre,abreviatura,direccion,x,y,provincia_id) VALUES (1,'Terminal San Agustín','SAG','Ave 27 e/ 266 y 272, Rpto San Agustín, La Lisa,',-82.4787393317909,23.0527646260588,1);
+REPLACE INTO terminal(id,nombre,abreviatura,direccion,x,y,provincia_id) VALUES (2,'Terminal Alberro','ALB','Ave. 99 y Final, Alberro, Cotorro',-82.2389828973882,23.0370331758535,1);
+REPLACE INTO terminal(id,nombre,abreviatura,direccion,x,y,provincia_id) VALUES (3,'Terminal Santiago','STGO','Calle 202 e/ 413 y 421, Rpto Santiago de las Vegas, Boyeros',-82.391721418882,22.9678739083912,1);
+REPLACE INTO terminal(id,nombre,abreviatura,direccion,x,y,provincia_id) VALUES (4,'Terminal Cotorro','COT','Ave 101 e/ 32 y 34, Rpto Las Delicias, Cotorro',-82.2619961391653,23.0410749547268,1);
+REPLACE INTO terminal(id,nombre,abreviatura,direccion,x,y,provincia_id) VALUES (5,'Terminal Lisa','LISA','Calle 160 e/ 53 y 57, La Lisa',-82.4444652429206,23.065929544752,1);
+REPLACE INTO terminal(id,nombre,abreviatura,direccion,x,y,provincia_id) VALUES (6,'Terminal Alamar','ALA','Calle 168 # 5390 e/ 5ta A y 5ta F, Zona 7, Alamar, Habana del Este',-82.2699466210476,23.1631140331307,1);
+REPLACE INTO terminal(id,nombre,abreviatura,direccion,x,y,provincia_id) VALUES (7,'Terminal Guanabacoa','GCOA','Independencia Este No. 800 e/ Línea Ferrocarril y Planta de Filtro, Rpto Recabel, Guanabacoa',-82.280070739824,23.1234077764974,1);
+REPLACE INTO terminal(id,nombre,abreviatura,direccion,x,y,provincia_id) VALUES (8,'Terminal Mulgoba','MUL','Calle 349 y Final, Rpto Primero de Mayo, Boyeros',-82.3707198735592,22.9875856908012,1);
+REPLACE INTO terminal(id,nombre,abreviatura,direccion,x,y,provincia_id) VALUES (9,'Terminal Diezmero','DIEZ','Cda San Miguel Padron y Los Aliados, San Miguel del Padron',-82.3077498994797,23.0883513652819,1);
+REPLACE INTO terminal(id,nombre,abreviatura,direccion,x,y,provincia_id) VALUES (10,'Terminal Calvario','CAL','Cda Managua s/n e/ Camilo Cienfuegos y Ave de las Flores, Rpto Eléctrico, Arroyo Naranjo',-82.3269862114462,23.0441175447621,1);
+REPLACE INTO terminal(id,nombre,abreviatura,direccion,x,y,provincia_id) VALUES (11,'Terminal Lawton','LAW','Ave. 17 No 25 e/ Pocito y A, Lawton, Diez de Octubre',-82.3439887569866,23.0906219120236,1);
+REPLACE INTO terminal(id,nombre,abreviatura,direccion,x,y,provincia_id) VALUES (12,'Terminal Bahía','BAH','Carr Casablanca s/n e/ 70 y C, Rpto Bahía, Habana del Este',-82.3130208631778,23.1501852686142,1);
+REPLACE INTO terminal(id,nombre,abreviatura,direccion,x,y,provincia_id) VALUES (13,'Terminal Fortuna','FOR','Ave San Francisco No. 17509 esq Arday, Rpto La Fortuna, Boyeros',-82.3765167476697,23.0466238869919,1);
+REPLACE INTO terminal(id,nombre,abreviatura,direccion,x,y,provincia_id) VALUES (14,'Terminal Guanabo','GBO','424 e/ 19 y Via Blanca, Peñas Altas, Habana del Este',-82.1166310499847,23.1674684535602,1);
+REPLACE INTO terminal(id,nombre,abreviatura,direccion,x,y,provincia_id) VALUES (15,'Terminal Palatino','PAL','Cda Palatino No. 351 e/ Agua y Fomento, Cerro',-82.3837475104934,23.1002740701041,1);
+REPLACE INTO terminal(id,nombre,abreviatura,direccion,x,y,provincia_id) VALUES (16,'Terminal Playa','PYA','Ave 5taF No. 12001 esq 120, Playa',-82.452720764331,23.0918827433749,1);
+REPLACE INTO terminal(id,nombre,abreviatura,direccion,x,y,provincia_id) VALUES (17,'Terminal Santa Amalia','SAM','Alvarado esq San Miguel, Santa Amalia, Arroyo Naranjo',-82.368024994887,23.0773957568524,1);
