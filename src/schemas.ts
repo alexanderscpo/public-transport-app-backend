@@ -1,6 +1,11 @@
-import { text, integer, sqliteTable, real } from "drizzle-orm/sqlite-core";
+import {
+  text,
+  integer,
+  sqliteTable,
+  primaryKey,
+  real,
+} from "drizzle-orm/sqlite-core";
 import { relations } from "drizzle-orm";
-import { primaryKey } from "drizzle-orm/mysql-core";
 
 export const provincia = sqliteTable("provincia", {
   id: integer("id").primaryKey(),
@@ -34,8 +39,7 @@ export const ruta = sqliteTable("ruta", {
 });
 
 export const parada = sqliteTable("parada", {
-  id: integer("id").primaryKey(),
-  codigo: text("codigo", { length: 10 }).notNull().unique(),
+  id: text("id", { length: 10 }).primaryKey(),
   nombre: text("nombre", { length: 50 }).notNull(),
   direccion: text("direccion", { length: 100 }).notNull(),
   x: real("x").notNull(),
@@ -48,17 +52,18 @@ export const parada = sqliteTable("parada", {
 export const rutasToParadas = sqliteTable(
   "rutas_to_paradas",
   {
+    id: integer("id").notNull(),
     ruta_id: integer("ruta_id")
       .notNull()
       .references(() => ruta.id),
-    parada_id: integer("parada_id")
+    parada_id: text("parada_id")
       .notNull()
       .references(() => parada.id),
     orden: integer("orden").notNull(),
-    sentido: text("tipo", { enum: ["IDA", "REGRESO"] }).notNull(),
+    regreso: integer("regreso", { mode: "boolean" }).notNull(), // Ida: 0, Regreso: 1
   },
   (t) => ({
-    pk: primaryKey({ columns: [t.ruta_id, t.parada_id] }),
+    pk: primaryKey({ columns: [t.id, t.ruta_id, t.parada_id] }),
   })
 );
 
