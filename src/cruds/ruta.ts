@@ -82,3 +82,53 @@ export const updateRuta = async (
     .where(eq(ruta.id, id))
     .returning();
 };
+
+export enum Sentido {
+  IDA = "IDA",
+  REGRESO = "REGRESO",
+}
+
+type Recorrido = {
+  orden: number;
+  parada: {
+    id: string;
+    nombre: string;
+    direccion: string;
+    x: number;
+    y: number;
+  };
+  regreso?: boolean;
+};
+
+export const getRecorrido = async (
+  db: DBDriver,
+  ruta_id: number,
+  sentido?: Sentido
+): Promise<Recorrido[]> => {
+  const recorrido = await db.query.rutasToParadas.findMany({
+    where: (rutasToParadas, { eq, and }) => {
+      if (!sentido) {
+        return eq(rutasToParadas.ruta_id, ruta_id);
+      }
+      const regreso = sentido == Sentido.REGRESO;
+      return and(
+        eq(rutasToParadas.ruta_id, ruta_id),
+        eq(rutasToParadas.regreso, regreso)
+      );
+    },
+    with: {
+      parada: {
+        columns: { provincia_id: false },
+      },
+    },
+    columns: {
+      id: false,
+      parada_id: false,
+      ruta_id: false,
+      orden: true,
+      regreso: !sentido,
+    },
+    orderBy: (rutasToParadas, { asc }) => asc(rutasToParadas.orden),
+  });
+  return recorrido;
+};

@@ -7,7 +7,7 @@ import { z } from "zod";
 import { zValidator } from "@hono/zod-validator";
 import { getProvincia, getProvincias } from "./cruds/provincia";
 import { getTerminal, getTerminales } from "./cruds/terminal";
-import { getRuta, getRutas } from "./cruds/ruta";
+import { getRecorrido, getRuta, getRutas, Sentido } from "./cruds/ruta";
 
 type Bindings = {
   DB: D1Database;
@@ -111,22 +111,53 @@ app.get(
   }
 );
 
-// app.get(
-//   "/provincias/:provincia_id/terminales/:terminal_id/rutas/:ruta_id/recorrido",
-//   zValidator(
-//     "param",
-//     z.object({
-//       provincia_id: z.string().regex(/^\d+$/).transform(Number),
-//       terminal_id: z.string().regex(/^\d+$/).transform(Number),
-//       ruta_id: z.string().regex(/^\d+$/).transform(Number),
-//     })
-//   ),
-//   async (c) => {
-//     const { provincia_id, terminal_id, ruta_id } = c.req.param();
-//     const db = drizzle(c.env.DB, { schema });
-//     // const recorrido
-//     return c.json({});
-//   }
-// );
+app.get(
+  "/provincias/:provincia_id/terminales/:terminal_id/rutas/:ruta_id/recorrido",
+  zValidator(
+    "param",
+    z.object({
+      provincia_id: z.string().regex(/^\d+$/).transform(Number),
+      terminal_id: z.string().regex(/^\d+$/).transform(Number),
+      ruta_id: z.string().regex(/^\d+$/).transform(Number),
+    })
+  ),
+  zValidator("query", z.object({ sentido: z.nativeEnum(Sentido).optional() })),
+  async (c) => {
+    const { provincia_id, terminal_id, ruta_id } = c.req.valid("param");
+    const { sentido } = c.req.valid("query");
+
+    const db = drizzle(c.env.DB, { schema });
+
+    const ruta = await getRuta(db, ruta_id, terminal_id, provincia_id);
+    if (!ruta) {
+      return c.notFound();
+    }
+
+    let recorrido = await getRecorrido(db, ruta.id, sentido);
+    if (!sentido) {
+      const ida = [];
+      const regreso = [];
+      recorrido.forEach((v) => {
+        const r = v.regreso;
+        delete v.regreso;
+        if (r) {
+          regreso.push({
+            ...v,
+          });
+        } else {
+          ida.push({
+            ...v,
+          });
+        }
+      });
+
+      recorrido = {
+        ida,
+        regreso,
+      };
+    }
+    return c.json({ recorrido });
+  }
+);
 
 export default app;
