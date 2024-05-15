@@ -3,8 +3,7 @@ import { DBDriver } from "..";
 import { parada } from "../schemas";
 
 type Parada = {
-  id: number;
-  codigo: string;
+  id: string;
   nombre: string;
   direccion: string;
   x: number;
@@ -12,14 +11,26 @@ type Parada = {
   provincia_id: number;
 };
 
-export const getParadas = async (db: DBDriver): Promise<Parada[]> => {
-  const paradas = await db.query.parada.findMany();
+export const getParadas = async (
+  db: DBDriver,
+  provincia_id: number,
+  offset: number,
+  limit: number
+) => {
+  const paradas = await db.query.parada.findMany({
+    where: (parada, { eq }) => eq(parada.provincia_id, provincia_id),
+    columns: {
+      provincia_id: false,
+    },
+    limit,
+    offset,
+  });
   return paradas;
 };
 
 export const getParada = async (
   db: DBDriver,
-  id: number
+  id: string
 ): Promise<Parada | undefined> => {
   const parada = await db.query.parada.findFirst({
     where: (parada, { eq }) => eq(parada.id, id),
@@ -44,7 +55,7 @@ export const insertParada = async (
 
 export const removeParada = async (
   db: DBDriver,
-  id: number
+  id: string
 ): Promise<Parada | undefined> => {
   const r = await db.delete(parada).where(eq(parada.id, id)).returning();
 
@@ -54,7 +65,7 @@ export const removeParada = async (
 
 export const updateParada = async (
   db: DBDriver,
-  id: number,
+  id: string,
   paradaData: Partial<Parada>
 ) => {
   let paradaDB = await getParada(db, id);

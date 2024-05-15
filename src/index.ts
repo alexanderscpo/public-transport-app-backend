@@ -8,6 +8,7 @@ import { zValidator } from "@hono/zod-validator";
 import { getProvincia, getProvincias } from "./cruds/provincia";
 import { getTerminal, getTerminales } from "./cruds/terminal";
 import { getRecorrido, getRuta, getRutas, Sentido } from "./cruds/ruta";
+import { getParadas } from "./cruds/parada";
 
 type Bindings = {
   DB: D1Database;
@@ -29,7 +30,7 @@ app.get(
   zValidator(
     "param",
     z.object({
-      provincia_id: z.string().regex(/^\d+$/).transform(Number),
+      provincia_id: z.coerce.number().int().positive(),
     })
   ),
   async (c) => {
@@ -43,11 +44,35 @@ app.get(
 );
 
 app.get(
+  "/provincias/:provincia_id/paradas",
+  zValidator(
+    "param",
+    z.object({
+      provincia_id: z.coerce.number().int().positive(),
+    })
+  ),
+  zValidator(
+    "query",
+    z.object({
+      offset: z.coerce.number().int().min(0).optional().default(0),
+      limit: z.coerce.number().int().min(1).max(50).optional().default(25),
+    })
+  ),
+  async (c) => {
+    const { provincia_id } = c.req.valid("param");
+    const { limit, offset } = c.req.valid("query");
+    const db = drizzle(c.env.DB, { schema });
+    const paradas = await getParadas(db, provincia_id, offset, limit);
+    return c.json({ paradas });
+  }
+);
+
+app.get(
   "/provincias/:provincia_id/terminales",
   zValidator(
     "param",
     z.object({
-      provincia_id: z.string().regex(/^\d+$/).transform(Number),
+      provincia_id: z.coerce.number().int().positive(),
     })
   ),
   async (c) => {
@@ -64,8 +89,8 @@ app.get(
   zValidator(
     "param",
     z.object({
-      provincia_id: z.string().regex(/^\d+$/).transform(Number),
-      terminal_id: z.string().regex(/^\d+$/).transform(Number),
+      provincia_id: z.coerce.number().int().positive(),
+      terminal_id: z.coerce.number().int().positive(),
     })
   ),
   async (c) => {
@@ -81,8 +106,8 @@ app.get(
   zValidator(
     "param",
     z.object({
-      provincia_id: z.string().regex(/^\d+$/).transform(Number),
-      terminal_id: z.string().regex(/^\d+$/).transform(Number),
+      provincia_id: z.coerce.number().int().positive(),
+      terminal_id: z.coerce.number().int().positive(),
     })
   ),
   async (c) => {
@@ -98,9 +123,9 @@ app.get(
   zValidator(
     "param",
     z.object({
-      provincia_id: z.string().regex(/^\d+$/).transform(Number),
-      terminal_id: z.string().regex(/^\d+$/).transform(Number),
-      ruta_id: z.string().regex(/^\d+$/).transform(Number),
+      provincia_id: z.coerce.number().int().positive(),
+      terminal_id: z.coerce.number().int().positive(),
+      ruta_id: z.coerce.number().int().positive(),
     })
   ),
   async (c) => {
@@ -116,9 +141,9 @@ app.get(
   zValidator(
     "param",
     z.object({
-      provincia_id: z.string().regex(/^\d+$/).transform(Number),
-      terminal_id: z.string().regex(/^\d+$/).transform(Number),
-      ruta_id: z.string().regex(/^\d+$/).transform(Number),
+      provincia_id: z.coerce.number().int().positive(),
+      terminal_id: z.coerce.number().int().positive(),
+      ruta_id: z.coerce.number().int().positive(),
     })
   ),
   zValidator("query", z.object({ sentido: z.nativeEnum(Sentido).optional() })),
