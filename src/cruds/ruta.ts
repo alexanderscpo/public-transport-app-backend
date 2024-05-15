@@ -62,46 +62,6 @@ export const getRuta = async (
   return ruta;
 };
 
-export const insertRuta = async (
-  db: DBDriver,
-  rutaData: Ruta
-): Promise<Ruta | undefined> => {
-  const r = await db
-    .insert(ruta)
-    .values({
-      ...rutaData,
-    })
-    .returning();
-
-  if (r.length == 0) return undefined;
-  return r[0];
-};
-
-export const removeRuta = async (
-  db: DBDriver,
-  id: number
-): Promise<Ruta | undefined> => {
-  const r = await db.delete(ruta).where(eq(ruta.id, id)).returning();
-
-  if (r.length == 0) return undefined;
-  return r[0];
-};
-
-export const updateRuta = async (
-  db: DBDriver,
-  id: number,
-  rutaData: Partial<Ruta>
-) => {
-  let rutaDB = await getRuta(db, id);
-  if (rutaDB == undefined) return undefined;
-
-  return await db
-    .update(ruta)
-    .set({ ...rutaData })
-    .where(eq(ruta.id, id))
-    .returning();
-};
-
 export enum Sentido {
   IDA = "IDA",
   REGRESO = "REGRESO",
@@ -151,3 +111,43 @@ export const getRecorrido = async (
   });
   return recorrido;
 };
+
+// export const insertRuta = async (
+//   db: DBDriver,
+//   rutaData: Ruta
+// ): Promise<Ruta | undefined> => {
+//   const r = await db
+//     .insert(ruta)
+//     .values({
+//       ...rutaData,
+//     })
+//     .returning();
+
+//   if (r.length == 0) return undefined;
+//   return r[0];
+// };
+
+// export const removeRuta = async (
+//   db: DBDriver,
+//   id: number
+// ): Promise<Ruta | undefined> => {
+//   const r = await db.delete(ruta).where(eq(ruta.id, id)).returning();
+
+//   if (r.length == 0) return undefined;
+//   return r[0];
+// };
+
+// export const updateRuta = async (
+//   db: DBDriver,
+//   id: number,
+//   rutaData: Partial<Ruta>
+// ) => {
+//   let rutaDB = await getRuta(db, id);
+//   if (rutaDB == undefined) return undefined;
+
+//   return await db
+//     .update(ruta)
+//     .set({ ...rutaData })
+//     .where(eq(ruta.id, id))
+//     .returning();
+// };

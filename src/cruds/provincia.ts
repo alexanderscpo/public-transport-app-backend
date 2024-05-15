@@ -24,42 +24,42 @@ export const getProvincia = async (
   return provincia;
 };
 
-export const insertProvincia = async (
-  db: DBDriver,
-  provinciaData: Provincia
-): Promise<Provincia | undefined> => {
-  const r = await db
-    .insert(provincia)
-    .values({
-      ...provinciaData,
-    })
-    .returning();
+// export const insertProvincia = async (
+//   db: DBDriver,
+//   provinciaData: Provincia
+// ): Promise<Provincia | undefined> => {
+//   const r = await db
+//     .insert(provincia)
+//     .values({
+//       ...provinciaData,
+//     })
+//     .returning();
 
-  if (r.length == 0) return undefined;
-  return r[0];
-};
+//   if (r.length == 0) return undefined;
+//   return r[0];
+// };
 
-export const removeProvincia = async (
-  db: DBDriver,
-  id: number
-): Promise<Provincia | undefined> => {
-  const r = await db.delete(provincia).where(eq(provincia.id, id)).returning();
+// export const removeProvincia = async (
+//   db: DBDriver,
+//   id: number
+// ): Promise<Provincia | undefined> => {
+//   const r = await db.delete(provincia).where(eq(provincia.id, id)).returning();
 
-  if (r.length == 0) return undefined;
-  return r[0];
-};
+//   if (r.length == 0) return undefined;
+//   return r[0];
+// };
 
-export const updateProvincia = async (
-  db: DBDriver,
-  id: number,
-  provinciaData: Partial<Provincia>
-) => {
-  let provinciaDB = await getProvincia(db, id);
-  if (provinciaDB == undefined) return undefined;
+// export const updateProvincia = async (
+//   db: DBDriver,
+//   id: number,
+//   provinciaData: Partial<Provincia>
+// ) => {
+//   let provinciaDB = await getProvincia(db, id);
+//   if (provinciaDB == undefined) return undefined;
 
-  return await db
-    .update(provincia)
-    .set({ ...provinciaData })
-    .where(eq(provincia.id, id))
-    .returning();
-};
+//   return await db
+//     .update(provincia)
+//     .set({ ...provinciaData })
+//     .where(eq(provincia.id, id))
+//     .returning();
+// };

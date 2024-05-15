@@ -43,42 +43,42 @@ export const getParada = async (
   return parada;
 };
 
-export const insertParada = async (
-  db: DBDriver,
-  paradaData: Parada
-): Promise<Parada | undefined> => {
-  const r = await db
-    .insert(parada)
-    .values({
-      ...paradaData,
-    })
-    .returning();
+// export const insertParada = async (
+//   db: DBDriver,
+//   paradaData: Parada
+// ): Promise<Parada | undefined> => {
+//   const r = await db
+//     .insert(parada)
+//     .values({
+//       ...paradaData,
+//     })
+//     .returning();
 
-  if (r.length == 0) return undefined;
-  return r[0];
-};
+//   if (r.length == 0) return undefined;
+//   return r[0];
+// };
 
-export const removeParada = async (
-  db: DBDriver,
-  id: string
-): Promise<Parada | undefined> => {
-  const r = await db.delete(parada).where(eq(parada.id, id)).returning();
+// export const removeParada = async (
+//   db: DBDriver,
+//   id: string
+// ): Promise<Parada | undefined> => {
+//   const r = await db.delete(parada).where(eq(parada.id, id)).returning();
 
-  if (r.length == 0) return undefined;
-  return r[0];
-};
+//   if (r.length == 0) return undefined;
+//   return r[0];
+// };
 
-export const updateParada = async (
-  db: DBDriver,
-  id: string,
-  paradaData: Partial<Parada>
-) => {
-  let paradaDB = await getParada(db, id);
-  if (paradaDB == undefined) return undefined;
+// export const updateParada = async (
+//   db: DBDriver,
+//   id: string,
+//   paradaData: Partial<Parada>
+// ) => {
+//   let paradaDB = await getParada(db, id);
+//   if (paradaDB == undefined) return undefined;
 
-  return await db
-    .update(parada)
-    .set({ ...paradaData })
-    .where(eq(parada.id, id))
-    .returning();
-};
+//   return await db
+//     .update(parada)
+//     .set({ ...paradaData })
+//     .where(eq(parada.id, id))
+//     .returning();
+// };
