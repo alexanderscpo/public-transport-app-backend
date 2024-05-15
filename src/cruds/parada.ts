@@ -30,10 +30,15 @@ export const getParadas = async (
 
 export const getParada = async (
   db: DBDriver,
-  id: string
-): Promise<Parada | undefined> => {
+  parada_id: string,
+  provincia_id: number
+) => {
   const parada = await db.query.parada.findFirst({
-    where: (parada, { eq }) => eq(parada.id, id),
+    where: (parada, { and, eq }) =>
+      and(eq(parada.id, parada_id), eq(parada.provincia_id, provincia_id)),
+    columns: {
+      provincia_id: false,
+    },
   });
   return parada;
 };
