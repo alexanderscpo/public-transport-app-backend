@@ -4,7 +4,7 @@
     "deploy": "wrangler deploy --minify src/index.ts",
     "db:generate": "drizzle-kit generate",
     "db:migrate": "wrangler d1 migrations apply d1-public-transport-db --local",
-    "db:migrate:prod": "wrangler d1 migrations apply d1-public-transport-db",
+    "db:migrate:prod": "wrangler d1 migrations apply d1-public-transport-db --remote",
     "db:migrate:preview": "wrangler d1 migrations apply --env preview preview-d1-stream",
     "db:studio": "drizzle-kit studio --config drizzle.config.local.ts"
   },
@@ -15,9 +15,9 @@
     "zod": "^3.23.8"
   },
   "devDependencies": {
-    "@cloudflare/workers-types": "^4.20240403.0",
+    "@cloudflare/workers-types": "^4.20240512.0",
     "better-sqlite3": "^10.0.0",
     "drizzle-kit": "^0.21.1",
-    "wrangler": "^3.47.0"
+    "wrangler": "^3.56.0"
   }
 }
