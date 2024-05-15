@@ -1,6 +1,6 @@
 import { eq } from "drizzle-orm";
 import { DBDriver } from "..";
-import { ruta } from "../schemas";
+import { ruta, rutasToParadas } from "../schemas";
 
 type Ruta = {
   id: number;
@@ -23,6 +23,25 @@ export const getRutas = async (
         eq(ruta.provincia_id, provincia_id)
       ),
   });
+  return rutas;
+};
+
+export const getRutasByParada = async (
+  db: DBDriver,
+  parada_id: string
+): Promise<Ruta[]> => {
+  const rutas = await db
+    .select({
+      id: ruta.id,
+      nombre: ruta.nombre,
+      origen: ruta.origen,
+      destino: ruta.destino,
+      terminal_id: ruta.terminal_id,
+      provincia_id: ruta.provincia_id,
+    })
+    .from(rutasToParadas)
+    .innerJoin(ruta, eq(rutasToParadas.ruta_id, ruta.id))
+    .where(eq(rutasToParadas.parada_id, parada_id));
   return rutas;
 };
 

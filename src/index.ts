@@ -7,7 +7,13 @@ import { z } from "zod";
 import { zValidator } from "@hono/zod-validator";
 import { getProvincia, getProvincias } from "./cruds/provincia";
 import { getTerminal, getTerminales } from "./cruds/terminal";
-import { getRecorrido, getRuta, getRutas, Sentido } from "./cruds/ruta";
+import {
+  getRecorrido,
+  getRuta,
+  getRutas,
+  getRutasByParada,
+  Sentido,
+} from "./cruds/ruta";
 import { getParada, getParadas } from "./cruds/parada";
 
 type Bindings = {
@@ -81,6 +87,25 @@ app.get(
     const db = drizzle(c.env.DB, { schema });
     const parada = await getParada(db, parada_id, provincia_id);
     return c.json({ parada });
+  }
+);
+
+app.get(
+  "/provincias/:provincia_id/paradas/:parada_id/rutas",
+  zValidator(
+    "param",
+    z.object({
+      provincia_id: z.coerce.number().int().positive(),
+      parada_id: z.string().min(8).max(10),
+    })
+  ),
+  async (c) => {
+    const { provincia_id, parada_id } = c.req.valid("param");
+    const db = drizzle(c.env.DB, { schema });
+    const parada = await getParada(db, parada_id, provincia_id);
+    if (!parada) return c.notFound();
+    const rutas = await getRutasByParada(db, parada.id);
+    return c.json({ rutas });
   }
 );
 
