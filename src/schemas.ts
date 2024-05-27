@@ -72,6 +72,7 @@ export const terminalRelations = relations(terminal, ({ one, many }) => ({
     fields: [terminal.provincia_id],
     references: [provincia.id],
   }),
+  rutas: many(ruta),
 }));
 
 export const rutasToParadasRelations = relations(rutasToParadas, ({ one }) => ({

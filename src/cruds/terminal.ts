@@ -34,6 +34,19 @@ export const getTerminal = async (
   return terminal;
 };
 
+export const getTerminalesWithRuta = async (
+  db: DBDriver,
+  provincia_id: number
+): Promise<Terminal[]> => {
+  const terminales = await db.query.terminal.findMany({
+    where: (terminal, { eq }) => eq(terminal.provincia_id, provincia_id),
+    with: {
+      rutas: true,
+    },
+  });
+  return terminales;
+};
+
 // export const insertTerminal = async (
 //   db: DBDriver,
 //   terminalData: Terminal

@@ -6,7 +6,11 @@ import * as schema from "./schemas";
 import { z } from "zod";
 import { zValidator } from "@hono/zod-validator";
 import { getProvincia, getProvincias } from "./cruds/provincia";
-import { getTerminal, getTerminales } from "./cruds/terminal";
+import {
+  getTerminal,
+  getTerminales,
+  getTerminalesWithRuta,
+} from "./cruds/terminal";
 import {
   getRecorrido,
   getRuta,
@@ -117,11 +121,40 @@ app.get(
       provincia_id: z.coerce.number().int().positive(),
     })
   ),
+  zValidator(
+    "query",
+    z.object({
+      with: z
+        .string()
+        .optional()
+        .transform((v) => (v ? v.split(",") : []))
+        .pipe(
+          z.array(z.string()).refine(
+            (array) => {
+              const requiredFields = ["ruta"];
+              return array.every((field) => requiredFields.includes(field));
+            },
+            {
+              message: "The 'with' query parameter must include 'ruta'.",
+            }
+          )
+        ),
+    })
+  ),
   async (c) => {
     const validated = c.req.valid("param");
     const { provincia_id } = validated;
+
+    const { with: withQuery } = c.req.valid("query");
+
     const db = drizzle(c.env.DB, { schema });
-    const terminales = await getTerminales(db, provincia_id);
+    let terminales;
+    if (withQuery.includes("ruta")) {
+      terminales = await getTerminalesWithRuta(db, provincia_id);
+    } else {
+      terminales = await getTerminales(db, provincia_id);
+    }
+
     return c.json({ terminales });
   }
 );
