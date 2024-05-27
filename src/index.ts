@@ -19,6 +19,8 @@ import {
   Sentido,
 } from "./cruds/ruta";
 import { getParada, getParadas } from "./cruds/parada";
+import { cors } from "hono/cors";
+import { cache } from "hono/cache";
 
 type Bindings = {
   DB: D1Database;
@@ -27,6 +29,22 @@ type Bindings = {
 export type DBDriver = DrizzleD1Database<typeof schema>;
 
 const app = new Hono<{ Bindings: Bindings }>();
+
+app.use(
+  "/*",
+  cors({
+    origin: "*",
+    allowMethods: ["GET"],
+  })
+);
+
+app.get(
+  "*",
+  cache({
+    cacheName: "public-transport-app",
+    cacheControl: "max-age=604800",
+  })
+);
 
 app.get("/provincias", async (c) => {
   const db = drizzle(c.env.DB, { schema });
